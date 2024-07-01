@@ -2,7 +2,7 @@ const express = require("express");
 const axios = require("axios");
 
 function home(req, res) {
-  const message = `You've reached the index page, but there's nothing here, kindly attach to the url "/api/hello?visitor_name=<your name>"`;
+  const message = `You've reached the index page, but there's nothing here, kindly attach to the url "/api/hello?visitor_name=yourname"`;
   return res.send(message);
 }
 
