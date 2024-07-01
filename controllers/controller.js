@@ -17,8 +17,13 @@ async function controller(req, res) {
     // Extract the city from the response
     const { city } = response.data;
 
+    // Extract temperature using the "city" from Abstract geolocation api inside weather api.
     
-    const message = `Hello ${visitor_name}, the temperature is 11 degrees Celsius in ${city}`;
+    const weather_url = `http://api.weatherapi.com/v1/current.json?key=817207ef5e7a4fba91a140815240107&q=${city}&aqi=no`
+    const weather_response = await axios.get(weather_url);
+    const temperature = weather_response.data.current.temp_c
+    
+    const message = `Hello ${visitor_name}, the temperature is ${temperature} degrees Celsius in ${city}`;
 
     return res.status(200).json({
       client_ip: clientIp,
