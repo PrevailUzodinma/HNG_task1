@@ -1,11 +1,13 @@
 const express = require('express');
 const app = express();
-const PORT = process.env.PORT || 3000; 
+const port = process.env.PORT || 3000;
+const router = require("./routers/index.router")
+
+app.set('trust proxy', true);
+
+app.use('/api', router);
 
 
-
-
-
-app.listen(() =>{
-    console.log(`Server is running at port ${PORT}`)
+app.listen(port, () =>{
+    console.log(`Server is running at port ${port}`)
 })

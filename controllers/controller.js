@@ -1,28 +1,34 @@
-const express = require('express');
-const axios = require('axios');
+const express = require("express");
+const axios = require("axios");
 
-async function greet (req,res) {
+async function controller(req, res) {
+  try {
+    // Extract visitor's name from query parameter
+    const {visitor_name} = req.query;
+    // Get client's IP address from the request object
+    const clientIp = req.ip;
 
-    try {
-        // get visitors name from the query parameter
-        const { visitor_name } = req.query
-        // get clients IP address from the request object
-        const clientIp = req.ip;
-        // because the request object cannot directly retrieve the clients geographical location, we use an external service "ipinfo"
-        const response = await axios.get(`https://ipinfo.io/${clientIp}/json`);
-        // extract the city from response data
-        const { city } = response.data;
+    // Use an external service "Abstract api" to get the geographical location
+    const url = `https://ipgeolocation.abstractapi.com/v1/?api_key=f19bdf9464d14594aaafe82996bae3c1`;
 
-        const message = `Hello ${visitor_name}, the temperature is 11 degree Celcius in ${city}`
+    // Make the HTTP request using axios
+    const response = await axios.get(url);
+
+    // Extract the city from the response
+    const { city } = response.data;
+
     
-        res.status(200).json({
-          client_ip: clientIp,
-          location: city,
-          greeting: message
-        });
-      } catch (error) {
-        res.status(500).send('Error retrieving location information');
-      }
+    const message = `Hello ${visitor_name}, the temperature is 11 degrees Celsius in ${city}`;
+
+    return res.status(200).json({
+      client_ip: clientIp,
+      location: city,
+      greeting: message,
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).send("Error retrieving location information");
+  }
 }
 
-module.exports = { greet }
+module.exports = { controller };
