@@ -26,6 +26,7 @@ async function controller(req, res) {
       greeting: message,
     });
   } catch (error) {
+    // never forget to console.error your errors!!!
     console.error(error);
     return res.status(500).send("Error retrieving location information");
   }
